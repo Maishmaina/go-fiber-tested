@@ -6,7 +6,7 @@ This is a description of my Go with Fiber Framework.
 
 Follow these steps to get started with the project:
 - Step 1: Clone the repository
- - (git clone https://github.com/Maishmaina/go-fiber-tested.git)
+   - (git clone https://github.com/Maishmaina/go-fiber-tested.git)
 - Step 2: Install dependencies
   - (cd go-fiber-tested)
   - go mod tidy
@@ -16,6 +16,8 @@ Follow these steps to get started with the project:
 ## Usage
 
 below show some screen short of use scenario 
+    User register request.
+<img src="/assets/Postman register.PNG" />
 
 
 ## License
