@@ -10,6 +10,9 @@ import (
 func main() {
     app := fiber.New()
 
+    //middleware to logs all request on this entry point
+    app.Use(middleware.LoggerMiddleware)
+
 	//basic route
     app.Get("/", func(c *fiber.Ctx) error {
         return c.SendString("Hello, World!")
@@ -21,7 +24,7 @@ func main() {
 	 // Login route
 	 app.Post("/login", controllers.Login)
 
-     //return all users
+     //return all users 
      app.Get("/users",middleware.Authorization(middleware.RoleAdmin),controllers.AllUsers);
 
     app.Listen(":3000")
