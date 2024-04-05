@@ -2,16 +2,27 @@
 package main
 
 import (
+    "github.com/gofiber/swagger"
     "github.com/gofiber/fiber/v2"
 	"backend-dev-evaluation/controllers"
     "backend-dev-evaluation/middleware"
 )
+
+//	@ChamaSoft		Fiber App API
+//	@description	This is the API documentation for chamasoft API Fiber app
+//	@version		1.0
+//	@host			localhost:3000
+//	@BasePath		/
 
 func main() {
     app := fiber.New()
 
     //middleware to logs all request on this entry point
     app.Use(middleware.LoggerMiddleware)
+
+    // Serve Swagger UI at /swagger/index.html
+    app.Get("/swagger/*", swagger.HandlerDefault)
+   
 
 	//basic route
     app.Get("/", func(c *fiber.Ctx) error {

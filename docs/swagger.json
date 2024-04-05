@@ -1,0 +1,31 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is the API documentation for chamasoft API Fiber app",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "paths": {
+        "/login": {
+            "post": {
+                "description": "{email,password} input required fields to login",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Login"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "return"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -19,6 +19,13 @@ func init() {
     }
 }
 
+//	@Register		New user
+//	@Description	{name,email,password} Add all required fields in the database
+//	@Tags			Register
+//	@Produce		json
+//	@Success		201	success	message
+//	@Router			/register [post]
+
 func Register(c *fiber.Ctx) error {
     var user models.User
 
@@ -43,6 +50,13 @@ func Register(c *fiber.Ctx) error {
     return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "User registered successfully"})
 }
 
+
+//	@Login			user
+//	@Description	{email,password} input required fields to login
+//	@Tags			Login
+//	@Produce		json
+//	@Success		200	return	jwt	token
+//	@Router			/login [post]
 func Login(c *fiber.Ctx) error {
     var user models.User
 
@@ -74,7 +88,13 @@ func Login(c *fiber.Ctx) error {
     return c.JSON(fiber.Map{"token": token})
 }
 
-//fetch all users from the db
+//	@Get			all users
+//	@Description	Get all users from the database
+//	@Tags			Users
+//	@Produce		json
+//	@Success		200	{array}	User
+//	@Router			/users [get]
+
 func AllUsers(c *fiber.Ctx)error{
 
     rows, err := db.Query("SELECT id, name, email FROM users")
