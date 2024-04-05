@@ -42,7 +42,7 @@ List of Users in mysqldb.
 <img src="/assets/userindb.PNG" />
 
 User List fetch by API.
-<img src="/assets/userlistig.PNG.PNG" />
+<img src="/assets/userlistig.PNG" />
 
 Auth Middleware.
 <img src="/assets/accessing protectedroutes.PNG" />
