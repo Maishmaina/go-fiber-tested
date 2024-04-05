@@ -16,8 +16,38 @@ Follow these steps to get started with the project:
 ## Usage
 
 below show some screen short of use scenario 
-    User register request.
+
+User this code to create mysql db and table 
+
+       CREATE DATABASE IF NOT EXISTS chama_soft;
+       USE chama_soft;
+
+    CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        email VARCHAR(100) NOT NULL UNIQUE,
+        password VARCHAR(255) NOT NULL
+    );
+
+User register request API.
 <img src="/assets/Postman register.PNG" />
+
+User Login request API.
+<img src="/assets/loginsuccessful.PNG" />
+
+Logger Middleware.
+<img src="/assets/loggermiddleware.PNG" />
+
+List of Users in mysqldb.
+<img src="/assets/userindb.PNG" />
+
+User List fetch by API.
+<img src="/assets/userlistig.PNG.PNG" />
+
+Auth Middleware.
+<img src="/assets/accessing protectedroutes.PNG" />
+
+
 
 
 ## License
