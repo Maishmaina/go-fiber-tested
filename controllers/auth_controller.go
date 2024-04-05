@@ -3,8 +3,21 @@ package controllers
 import (
     "github.com/gofiber/fiber/v2"
     "backend-dev-evaluation/models"
+    "backend-dev-evaluation/utils"
+    "database/sql"
+    _ "github.com/go-sql-driver/mysql"
    
 )
+
+var db *sql.DB
+
+func init() {
+    // db connection
+    db, _ = sql.Open("mysql", "root:@tcp(localhost:3306)/chama_soft")
+    if err := db.Ping(); err != nil {
+        panic(err)
+    }
+}
 
 func Register(c *fiber.Ctx) error {
     var user models.User
@@ -22,8 +35,10 @@ func Register(c *fiber.Ctx) error {
     user.Password = hashedPassword
 
     // Save the user to the database
-   
-    // db.Exec("INSERT INTO users (name, email,password) VALUES (?, ?)", user.Name, user.Email,user.Password)
+    _, err = db.Exec("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", user.Name, user.Email, user.Password)
+    if err != nil {
+        return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Error saving user"})
+    }
 
     return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "User registered successfully"})
 }
@@ -37,11 +52,17 @@ func Login(c *fiber.Ctx) error {
 
     // Retrieve user from the database
 
-    // db.Get(&user, "SELECT * FROM users WHERE email = ?", user.Email)
+    row := db.QueryRow("SELECT id, password FROM users WHERE email = ?", user.Email)
+
+    var storedPassword string
+    var userID int
+    if err := row.Scan(&userID, &storedPassword); err != nil {
+        return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Invalid Emails or Password"})
+    }
 
     // Check if the user exists and verify the password
-    if user.ID == 0 || !utils.CheckPasswordHash(user.Password, user.Password) {
-        return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Invalid email or password"})
+    if !utils.CheckPasswordHash(user.Password, user.Password) {
+        return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Invalid Email or Passwords"})
     }
 
     // Generate JWT token
@@ -51,4 +72,26 @@ func Login(c *fiber.Ctx) error {
     }
 
     return c.JSON(fiber.Map{"token": token})
+}
+
+//fetch all users from the db
+func AllUsers(c *fiber.Ctx)error{
+
+    rows, err := db.Query("SELECT id, name, email FROM users")
+    if err != nil {
+        return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Error fetching users"})
+    }
+    defer rows.Close()
+
+    var users []models.User
+    for rows.Next() {
+        var user models.User
+        if err := rows.Scan(&user.ID, &user.Name, &user.Email); err != nil {
+            return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Error scanning users"})
+        }
+        users = append(users, user)
+    }
+
+    // Return users
+    return c.JSON(users)
 }

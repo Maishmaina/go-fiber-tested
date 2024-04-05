@@ -4,6 +4,7 @@ package main
 import (
     "github.com/gofiber/fiber/v2"
 	"backend-dev-evaluation/controllers"
+    "backend-dev-evaluation/middleware"
 )
 
 func main() {
@@ -19,6 +20,9 @@ func main() {
 
 	 // Login route
 	 app.Post("/login", controllers.Login)
+
+     //return all users
+     app.Get("/users",middleware.Authorization(middleware.RoleAdmin),controllers.AllUsers);
 
     app.Listen(":3000")
 }
